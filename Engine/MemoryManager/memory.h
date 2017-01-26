@@ -42,13 +42,17 @@ public:
     int task(pid_t pid);
     
     template <typename type>
-    type read(mach_vm_address_t address)
+    type read(mach_vm_address_t address, size_t extraSize = sizeof(type), bool debug = false)
     {
+        if(debug) {
+            printf("read: 0x%llx => size: %lu\n", address, extraSize);
+        }
+        
         type content;
         
         vm_offset_t data;
         uint32_t sz;
-        auto re = vm_read(_PHandle, (vm_address_t)address, sizeof(type), &data, &sz);
+        auto re = vm_read(_PHandle, (vm_address_t)address, extraSize, &data, &sz);
         if(re == KERN_SUCCESS)
         {
             content = (type) *(type *)(data);

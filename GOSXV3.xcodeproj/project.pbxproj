@@ -30,6 +30,7 @@
 		D8A1BB4D1E3A113E008278DD /* TriggerBot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D8A1BB4B1E3A113E008278DD /* TriggerBot.cpp */; };
 		D8A1BB501E3A1382008278DD /* ray.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D8A1BB4E1E3A1382008278DD /* ray.cpp */; };
 		D8A1BB541E3A18CE008278DD /* feature.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D8A1BB521E3A18CE008278DD /* feature.cpp */; };
+		D8BF6AFC1E3A5311007B8769 /* init.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D8BF6AFA1E3A5311007B8769 /* init.cpp */; };
 		D8CC6EC61E39C24600519F9E /* Extras.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D8CC6EC41E39C24600519F9E /* Extras.cpp */; };
 /* End PBXBuildFile section */
 
@@ -101,6 +102,8 @@
 		D8A1BB4F1E3A1382008278DD /* ray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ray.h; sourceTree = "<group>"; };
 		D8A1BB521E3A18CE008278DD /* feature.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = feature.cpp; sourceTree = "<group>"; };
 		D8A1BB531E3A18CE008278DD /* feature.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = feature.h; sourceTree = "<group>"; };
+		D8BF6AFA1E3A5311007B8769 /* init.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = init.cpp; sourceTree = "<group>"; };
+		D8BF6AFB1E3A5311007B8769 /* init.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = init.h; sourceTree = "<group>"; };
 		D8CC6EC41E39C24600519F9E /* Extras.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Extras.cpp; sourceTree = "<group>"; wrapsLines = 0; };
 		D8CC6EC51E39C24600519F9E /* Extras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Extras.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -200,6 +203,7 @@
 		D82BAC191E372FE0009060DF /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				D8BF6AF91E3A52FC007B8769 /* InitManager */,
 				D82BAC1A1E372FE0009060DF /* main.cpp */,
 				D82BAC1B1E372FE0009060DF /* main.h */,
 			);
@@ -300,6 +304,15 @@
 			path = FeatureManager;
 			sourceTree = "<group>";
 		};
+		D8BF6AF91E3A52FC007B8769 /* InitManager */ = {
+			isa = PBXGroup;
+			children = (
+				D8BF6AFA1E3A5311007B8769 /* init.cpp */,
+				D8BF6AFB1E3A5311007B8769 /* init.h */,
+			);
+			path = InitManager;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -364,6 +377,7 @@
 				D8A1BB501E3A1382008278DD /* ray.cpp in Sources */,
 				D89F6CFD1E38D97800A7A635 /* settings.cpp in Sources */,
 				D89F6CF91E38BADC00A7A635 /* hitbox.cpp in Sources */,
+				D8BF6AFC1E3A5311007B8769 /* init.cpp in Sources */,
 				D81707B91E3931560087DED6 /* glow.cpp in Sources */,
 				D82BAC331E37741C009060DF /* engineClient.cpp in Sources */,
 				D89F6CE51E388A9A00A7A635 /* BunnyHop.cpp in Sources */,

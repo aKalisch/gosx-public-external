@@ -1,19 +1,16 @@
 #include "engine.h"
 
 cEngine::cEngine(const char* processName) {
-    Mem = new cMemoryManager(processName);
-    Offset = new cOffsetManager(Mem);
-    EngineClient = new cEngineClient(Mem, Offset);
-    if(EngineClient->isInGame()) {
-        BspParser = new cBspParser(EngineClient->GetGameDirectory(), EngineClient->GetMapFile());
-        BspParser->readBSP(true);
-    }
-    SettingsManager = new cSettingsManager();
-    GlowManager = new cGlowManager(Mem, Offset);
+    _pName = processName;
+    _initEngine(_pName);
 }
 
-void cEngine::Refresh(const char* processName) {
-    Mem = new cMemoryManager(processName);
+void cEngine::Refresh() {
+    _initEngine(_pName);
+}
+
+void cEngine::_initEngine(const char* processName) {
+    Mem = new cMemoryManager(_pName);
     Offset = new cOffsetManager(Mem);
     EngineClient = new cEngineClient(Mem, Offset);
     if(EngineClient->isInGame()) {

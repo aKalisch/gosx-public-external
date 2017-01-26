@@ -18,7 +18,8 @@
 class cEngine {
 public:
 	cEngine(const char* processName);
-    void Refresh(const char* processName);
+    void Refresh();
+    void _initEngine(const char* processName);
 	cMemoryManager* Mem;
     cMemoryManager* GetMemory();
 	cOffsetManager* Offset;
@@ -40,6 +41,7 @@ public:
     int GetPid();
     int GetTask();
 private:
+    const char* _pName;
     std::string currentMap;
 };
 

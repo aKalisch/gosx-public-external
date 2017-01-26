@@ -14,8 +14,6 @@ cBunnyHop::cBunnyHop(cEngine* engine) {
 
 
 void cBunnyHop::apply() {
-    int randomDelay = ((rand()%(1000-600 + 1) + 600) * 10);
-    
     cEntityManager* localPlayer = EngineFactory->GetLocalEntity();
     if(!localPlayer->isValidLivePlayer()) {
         return;
@@ -28,6 +26,8 @@ void cBunnyHop::apply() {
        !localPlayer->isInAir()
     )
     {
+        
+        int randomDelay = ((rand()%(1000-600 + 1) + 600) * 10);
         usleep(randomDelay);
         localPlayer->forceJump();
     }

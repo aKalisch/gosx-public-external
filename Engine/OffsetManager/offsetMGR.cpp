@@ -2,6 +2,7 @@
 
 cOffsetManager::cOffsetManager(cMemoryManager* memManager) {
 	memoryManager = memManager;
+    if(memoryManager->GetPid() != -1 && memoryManager->GetTask() != 0) {
 	sModule clientDLL = memoryManager->getModule("/client.dylib");
 	sModule engineDLL = memoryManager->getModule("/engine.dylib");
     
@@ -70,4 +71,5 @@ cOffsetManager::cOffsetManager(cMemoryManager* memManager) {
         "xxxxxxxxxxxxxxxx????xxxxxxxxx????xxxxxxx?xxx????",
         0x2C
     ) + 0x4;
+    }
 }

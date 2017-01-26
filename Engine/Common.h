@@ -43,7 +43,7 @@ public:
 	char unk2[0x15];                // 0x2B => 0x40 (len: 0x15)
     
     bool isValidGlowEntity() {
-        return !RenderWhenOccluded && entityPointer != 0x0;
+        return entityPointer != 0x0;
     }
 };
 

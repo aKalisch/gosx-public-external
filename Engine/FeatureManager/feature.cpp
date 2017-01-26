@@ -20,7 +20,7 @@ void cFeatureManager::GetGlowEspThread(cEngine* engine) {
                 g_cGlow->applyGlow();
             }
         }
-        usleep(17000);
+        usleep(8000);
     }
     return;
 }
@@ -56,7 +56,7 @@ void cFeatureManager::GetAimHelperThread(cEngine* engine) {
             }
         }
         
-        usleep(1000);
+        usleep(250);
     }
     return;
 }
@@ -92,7 +92,7 @@ void cFeatureManager::GetTriggerBotThread(cEngine* engine) {
             }
         }
         
-        usleep(100);
+        usleep(250);
     }
     return;
 }

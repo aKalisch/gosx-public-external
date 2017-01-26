@@ -15,6 +15,10 @@ cExtraManager::cExtraManager(cEngine* engine) {
 }
 
 void cExtraManager::FlashReducer() {
+    if(!LocalPlayer->isValidLivePlayer()) {
+        return;
+    }
+    
     float maxFlashAlpha = settingsManager->GetMaxFlashAlpha();
     float currAlpha = LocalPlayer->GetFlashAlpha();
     if(currAlpha == 0) {
@@ -28,8 +32,11 @@ void cExtraManager::FlashReducer() {
     LocalPlayer->setFlashAlpha(settingsManager->GetMaxFlashAlpha());
 }
 
-void cExtraManager::AutoPistolSwitch()
-{
+void cExtraManager::AutoPistolSwitch() {
+    if(!LocalPlayer->isValidLivePlayer()) {
+        return;
+    }
+    
     int currentWeapon = LocalPlayer->GetActiveWeaponEntityID();
     if(
        !cWeaponManager::isPistol(currentWeapon) &&
@@ -43,8 +50,11 @@ void cExtraManager::AutoPistolSwitch()
     }
 }
 
-void cExtraManager::AutoPistolToKnifeSwitch()
-{
+void cExtraManager::AutoPistolToKnifeSwitch() {
+    if(!LocalPlayer->isValidLivePlayer()) {
+        return;
+    }
+    
     int currentWeapon = LocalPlayer->GetActiveWeaponEntityID();
     if(
        cWeaponManager::isPistol(currentWeapon) &&
@@ -57,8 +67,11 @@ void cExtraManager::AutoPistolToKnifeSwitch()
     }
 }
 
-void cExtraManager::KnifeBot()
-{
+void cExtraManager::KnifeBot() {
+    if(!LocalPlayer->isValidLivePlayer()) {
+        return;
+    }
+    
     for(int i = 1; i < engineFactory->GetEngineClient()->getMaxPlayers(); i++) {
         int currentWeapon = LocalPlayer->GetActiveWeaponEntityID();
         if(!cWeaponManager::isKnife(currentWeapon)) {
@@ -92,8 +105,11 @@ void cExtraManager::KnifeBot()
     }
 }
 
-void cExtraManager::AutoDuck()
-{
+void cExtraManager::AutoDuck() {
+    if(!LocalPlayer->isValidLivePlayer()) {
+        return;
+    }
+    
     if(
        !engineFactory->GetKeyManager()->isPressed(kVK_Shift) &&
        !engineFactory->GetKeyManager()->isPressed(kVK_Control)

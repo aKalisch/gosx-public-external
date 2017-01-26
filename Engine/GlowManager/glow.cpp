@@ -15,7 +15,7 @@ cGlowManager::cGlowManager(cMemoryManager* memMngr, cOffsetManager* offMngr) {
 }
 
 int cGlowManager::GetGlowCount() {
-    return mem->read<int>(off->client.m_dwGlowManager + off->client.m_dwGlowCount) - 1;
+    return mem->read<int>(off->client.m_dwGlowManager + off->client.m_dwGlowCount);
 }
 
 sGlowEntity cGlowManager::GetGlowEntity(int index) {

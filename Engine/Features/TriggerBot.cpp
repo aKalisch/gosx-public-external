@@ -30,6 +30,10 @@ bool cTriggerBot::canHit(Vector hitboxMin, Vector hitboxMax) {
 
 void cTriggerBot::apply() {
     LocalPlayer = engineFactory->GetLocalEntity();
+    if(!LocalPlayer->isValidLivePlayer()) {
+        return;
+    }
+    
     int currentWeapon = LocalPlayer->GetActiveWeaponEntityID();
     if (
         cWeaponManager::isC4(currentWeapon) ||

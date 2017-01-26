@@ -43,6 +43,7 @@ public:
         }
         return v;
     }
+    
     bool GetHackenabled();
     bool GetGlowenabled();
     bool GetHopenabled();

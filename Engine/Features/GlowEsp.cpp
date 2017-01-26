@@ -20,6 +20,9 @@ void cGlowEsp::applyGlow() {
     cGlowManager* glowManager = engine->GetGlowManager();
     
     bool isGotvMode = true;
+    if(LocalPlayer->isValidLivePlayer()) {
+        isGotvMode = false;
+    }
     
     for (int i = 1; i < engineClient->getMaxPlayers(); i++) {
         cEntityManager* entity = engine->GetEntity(i);
@@ -33,28 +36,25 @@ void cGlowEsp::applyGlow() {
                 continue;
             }
             
-            bool entityIsVisible = false;
-            if(LocalPlayer->isValidLivePlayer()) {
-                isGotvMode = false;
-                entityIsVisible = bsp->isVisible(LocalPlayer->GetPositionOffset(), entity->GetPositionOffset());
-            }
-
             float alpha = settings->GetGlowalpha();
             std::string colorBase;
             if(!isGotvMode) {
-                colorBase = settings->GetColorTvisible();
-            
-                if (entityIsVisible) {
-                    colorBase = settings->GetColorT();
-                }
-            
-                if (entity->GetTeam() == TEAM_CT) {
+                bool entityIsVisible = bsp->isVisible(LocalPlayer->GetPositionOffset(), entity->GetPositionOffset());
+                if(entity->GetTeam() == TEAM_T) {
+                    colorBase = settings->GetColorTvisible();
+                    if (entityIsVisible) {
+                        colorBase = settings->GetColorT();
+                    }
+                } else {
                     colorBase = settings->GetColorCTvisible();
                     if(entityIsVisible) {
                         colorBase = settings->GetColorCT();
                     }
                 }
             } else {
+                if(glow.RenderWhenOccluded) {
+                    continue;
+                }
                 alpha = 0.65f;
                 if (entity->GetTeam() == TEAM_CT) {
                     colorBase = "114,154,221";
@@ -86,13 +86,21 @@ void cGlowEsp::applyGlow() {
             if(gEntity.isValidGlowEntity()) {
                 cEntityManager* entity = engine->DefineGlowEntity(gEntity.entityPointer);
                 if(entity->isValidGlowEntity()) {
+                    bool isWeapon = entity->isWeapon();
+                    bool isChicken = entity->isChicken();
+                    bool isBomb = entity->isBomb();
+                    
+                    if((isWeapon || isBomb) && gEntity.RenderWhenOccluded) {
+                        continue;
+                    }
+                    
                     float alpha = settings->GetGlowalpha();
                     std::string colorBase;
-                    if(entity->isWeapon()) {
+                    if (isWeapon) {
                         colorBase = "255,0,0";
-                    } else if (entity->isBomb()) {
+                    } else if (isBomb) {
                         colorBase = "0,255,0";
-                    } else if (entity->isChicken()) {
+                    } else if (isChicken) {
                         colorBase = "255,255,255";
                     } else {
                         continue;
