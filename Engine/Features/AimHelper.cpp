@@ -12,6 +12,7 @@ cAimHelper::cAimHelper(cEngine* engine) {
     engineFactory = engine;
     settingsManager = engineFactory->GetSettingsManager();
     hitboxManager = new cHitboxManager();
+    bsp = engineFactory->GetBspParser();
 }
 
 int cAimHelper::getBestBone(cEntityManager* entity)
@@ -73,7 +74,6 @@ int cAimHelper::findTarget()
         int aimBone = getBestBone(entity);
         Vector hitbox = entity->GetBonePosition(aimBone);
         
-        cBspParser* bsp = engineFactory->GetBspParser();
         if(settingsManager->GetVisibilityCheck() && !bsp->isVisible(posOffset, hitbox))
         {
             continue;
@@ -114,6 +114,7 @@ int cAimHelper::findTarget()
                 m_bestent = i - 1;
             }
         }
+        delete entity;
     }
     return m_bestent;
 }
@@ -223,4 +224,5 @@ void cAimHelper::apply()
     }
     
     aimTarget(entity, closest);
+    delete entity;
 }

@@ -23,7 +23,7 @@ void cPatternScanner::readBuffer(uint64_t dwStart, size_t dwSize)
     bufferSize = dwSize;
     moduleStart = dwStart;
     
-    pRemote = mem->readData(moduleStart, bufferSize);
+    pRemote = mem->readModule(moduleStart, bufferSize);
 }
 
 void cPatternScanner::unload()

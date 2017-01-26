@@ -17,6 +17,7 @@ public:
     void applyGlow();
 private:
     cEngine* engine;
+    cBspParser* bsp;
 };
 
 #endif /* GlowEsp_h */

@@ -31,6 +31,7 @@ private:
     cEntityManager* LocalPlayer;
     cHitboxManager* hitboxManager;
     cSettingsManager* settingsManager;
+    cBspParser* bsp;
 };
 
 

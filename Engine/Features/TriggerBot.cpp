@@ -10,6 +10,8 @@
 
 cTriggerBot::cTriggerBot(cEngine* engine) {
     engineFactory = engine;
+    hitboxMngr = new cHitboxManager();
+    bsp = engineFactory->GetBspParser();
 }
 
 bool cTriggerBot::canHit(Vector hitboxMin, Vector hitboxMax) {
@@ -19,9 +21,10 @@ bool cTriggerBot::canHit(Vector hitboxMin, Vector hitboxMax) {
     
     if (!ray->Trace(hitboxMin, hitboxMax, distance))
     {
+        delete ray;
         return false;
     }
-    
+    delete ray;
     return true;
 }
 
@@ -44,7 +47,6 @@ void cTriggerBot::apply() {
                 continue;
             }
             
-            cHitboxManager* hitboxMngr = new cHitboxManager();
             Hitbox_t hitbox;
             Vector entityHitbox;
             bool triggerCanHit =  false;
@@ -58,7 +60,6 @@ void cTriggerBot::apply() {
                 
                 entityHitbox = entity->GetBonePosition(hitbox.iBone);
                 
-                cBspParser* bsp = engineFactory->GetBspParser();
                 if(!bsp->isVisible(LocalPlayer->GetPositionOffset(), entityHitbox)) {
                     continue;
                 }
@@ -88,6 +89,8 @@ void cTriggerBot::apply() {
                 usleep(cWeaponManager::getDelay(currentWeapon) * 1000);
                 LocalPlayer->forceAttack();
             }
+            
+            delete entity;
         }
     }
 }

@@ -78,7 +78,7 @@ public:
         return false;
     }
     
-    Byte * readData(vm_address_t moduleStart, size_t moduleSize);
+    Byte * readModule(vm_address_t moduleStart, size_t moduleSize);
     std::string readstring(mach_vm_address_t address);
     
     int GetPid();

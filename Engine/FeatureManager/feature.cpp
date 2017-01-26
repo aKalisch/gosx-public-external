@@ -15,7 +15,7 @@ void cFeatureManager::GetGlowEspThread(cEngine* engine) {
         if(
            settings->GetHackenabled() &&
            settings->GetGlowenabled()
-           ) {
+        ) {
             if(engine->GetEngineClient()->isInGame()) {
                 g_cGlow->applyGlow();
             }
@@ -32,7 +32,7 @@ void cFeatureManager::GetBunnyHopThread(cEngine* engine) {
         if(
            settings->GetHackenabled() &&
            settings->GetHopenabled()
-           ) {
+        ) {
             if(engine->GetEngineClient()->isInGame()) {
                 g_cBhop->apply();
             }
@@ -50,7 +50,7 @@ void cFeatureManager::GetAimHelperThread(cEngine* engine) {
         if(
            settings->GetHackenabled() &&
            settings->GetAimbot()
-           ) {
+        ) {
             if(engine->GetEngineClient()->isInGame()) {
                 g_cAimHelper->apply();
             }
@@ -86,7 +86,7 @@ void cFeatureManager::GetTriggerBotThread(cEngine* engine) {
         if(
            settings->GetHackenabled() &&
            settings->GetTriggerenabled()
-           ) {
+        ) {
             if(engine->GetEngineClient()->isInGame()) {
                 g_cTriggerBot->apply();
             }

@@ -58,6 +58,7 @@ public:
     void        forceDuck(bool on = false);
     void        setGlow(float r, float g, float b, float a, bool throughWalls);
     void        setGlow(sGlowEntity glow, int index);
+    void        setGlow(sGlowEntity glow);
     void        setFlashAlpha(float alpha);
     
     template<typename T>

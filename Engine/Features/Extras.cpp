@@ -88,6 +88,7 @@ void cExtraManager::KnifeBot()
         }
         
         LocalPlayer->forceAttack2();
+        delete entity;
     }
 }
 

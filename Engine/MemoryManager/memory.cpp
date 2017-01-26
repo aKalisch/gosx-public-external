@@ -115,7 +115,7 @@ bool cMemoryManager::retrieveModule(const char* moduleName) {
     return false;
 }
 
-Byte * cMemoryManager::readData(vm_address_t moduleStart, size_t moduleSize)
+Byte * cMemoryManager::readModule(vm_address_t moduleStart, size_t moduleSize)
 {
     uint8_t * buffer = nullptr;
     vm_offset_t readMem;

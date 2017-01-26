@@ -25,6 +25,8 @@ private:
     cEngine* engineFactory;
     cEntityManager* LocalPlayer;
     cSettingsManager* settingsManager;
+    cHitboxManager* hitboxMngr;
+    cBspParser* bsp;
 };
 
 #endif /* TriggerBot_hpp */

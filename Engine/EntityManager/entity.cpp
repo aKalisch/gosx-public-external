@@ -154,7 +154,7 @@ uint64_t cEntityManager::GetBoneMatrixPointer() {
 }
 
 void cEntityManager::setGlow(float r, float g, float b, float a, bool throughWalls) {
-    uint64_t baseGlowObject = GetGlowObjectsManager() + (0x40 * GetGlowIndex());
+    uint64_t baseGlowObject = GetGlowObjectsManager() + (offsetManager->client.m_dwGlowLoopDistance * GetGlowIndex());
     sGlowEntity tempGlow = memoryManager->read<sGlowEntity>(baseGlowObject);
     tempGlow.r = r;
     tempGlow.g = g;
@@ -166,12 +166,17 @@ void cEntityManager::setGlow(float r, float g, float b, float a, bool throughWal
 }
 
 void cEntityManager::setGlow(sGlowEntity glow, int index) {
-    uint64_t baseGlowObject = GetGlowObjectsManager() + (0x40 * index);
+    uint64_t baseGlowObject = GetGlowObjectsManager() + (offsetManager->client.m_dwGlowLoopDistance * index);
+    memoryManager->write<sGlowEntity>(baseGlowObject, glow);
+}
+
+void cEntityManager::setGlow(sGlowEntity glow) {
+    uint64_t baseGlowObject = GetGlowObjectsManager() + (offsetManager->client.m_dwGlowLoopDistance * GetGlowIndex());
     memoryManager->write<sGlowEntity>(baseGlowObject, glow);
 }
 
 sGlowEntity cEntityManager::GetGlowObject() {
-    uint64_t baseGlowObject = GetGlowObjectsManager() + (0x40 * GetGlowIndex());
+    uint64_t baseGlowObject = GetGlowObjectsManager() + (offsetManager->client.m_dwGlowLoopDistance * GetGlowIndex());
     return memoryManager->read<sGlowEntity>(baseGlowObject);
 }
 
