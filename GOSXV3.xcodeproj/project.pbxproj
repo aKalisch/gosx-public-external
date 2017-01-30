@@ -17,6 +17,7 @@
 		D82BAC2C1E374849009060DF /* pattern.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D82BAC2A1E374849009060DF /* pattern.cpp */; };
 		D82BAC2D1E37591D009060DF /* entity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D82BAC0E1E372FE0009060DF /* entity.cpp */; };
 		D82BAC331E37741C009060DF /* engineClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D82BAC311E37741C009060DF /* engineClient.cpp */; };
+		D83412CE1E3E284800F950F8 /* resource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D83412CC1E3E284800F950F8 /* resource.cpp */; };
 		D89F6CDF1E3878AC00A7A635 /* GlowEsp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D89F6CDE1E3878AC00A7A635 /* GlowEsp.cpp */; };
 		D89F6CE51E388A9A00A7A635 /* BunnyHop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D89F6CE41E388A9A00A7A635 /* BunnyHop.cpp */; };
 		D89F6CE81E388F8B00A7A635 /* Math.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D89F6CE61E388F8B00A7A635 /* Math.cpp */; };
@@ -32,6 +33,8 @@
 		D8A1BB541E3A18CE008278DD /* feature.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D8A1BB521E3A18CE008278DD /* feature.cpp */; };
 		D8BF6AFC1E3A5311007B8769 /* init.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D8BF6AFA1E3A5311007B8769 /* init.cpp */; };
 		D8CC6EC61E39C24600519F9E /* Extras.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D8CC6EC41E39C24600519F9E /* Extras.cpp */; };
+		D8E0436C1E3B1A0300539FB7 /* radar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D8E0436A1E3B1A0300539FB7 /* radar.cpp */; };
+		D8E0436F1E3B1D4600539FB7 /* RankReveal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D8E0436D1E3B1D4600539FB7 /* RankReveal.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -60,7 +63,7 @@
 		D82BAC121E372FE0009060DF /* memory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = memory.h; sourceTree = "<group>"; wrapsLines = 0; };
 		D82BAC141E372FE0009060DF /* offsetMGR.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = offsetMGR.cpp; sourceTree = "<group>"; wrapsLines = 0; };
 		D82BAC151E372FE0009060DF /* offsetMGR.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = offsetMGR.h; sourceTree = "<group>"; wrapsLines = 0; };
-		D82BAC1A1E372FE0009060DF /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		D82BAC1A1E372FE0009060DF /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; wrapsLines = 0; };
 		D82BAC1B1E372FE0009060DF /* main.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = main.h; sourceTree = "<group>"; };
 		D82BAC231E3744CC009060DF /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = System/Library/Frameworks/ApplicationServices.framework; sourceTree = SDKROOT; };
 		D82BAC251E3744D4009060DF /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
@@ -75,6 +78,8 @@
 		D82BAC431E379513009060DF /* BunnyHop.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BunnyHop.h; sourceTree = "<group>"; };
 		D82BAC441E3796FA009060DF /* Vector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Vector.h; sourceTree = "<group>"; };
 		D82BAC461E3798AD009060DF /* Keys.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Keys.h; sourceTree = "<group>"; };
+		D83412CC1E3E284800F950F8 /* resource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = resource.cpp; sourceTree = "<group>"; };
+		D83412CD1E3E284800F950F8 /* resource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = resource.h; sourceTree = "<group>"; };
 		D89F6CDE1E3878AC00A7A635 /* GlowEsp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GlowEsp.cpp; sourceTree = "<group>"; wrapsLines = 0; };
 		D89F6CE41E388A9A00A7A635 /* BunnyHop.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BunnyHop.cpp; sourceTree = "<group>"; };
 		D89F6CE61E388F8B00A7A635 /* Math.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Math.cpp; sourceTree = "<group>"; };
@@ -106,6 +111,10 @@
 		D8BF6AFB1E3A5311007B8769 /* init.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = init.h; sourceTree = "<group>"; };
 		D8CC6EC41E39C24600519F9E /* Extras.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Extras.cpp; sourceTree = "<group>"; wrapsLines = 0; };
 		D8CC6EC51E39C24600519F9E /* Extras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Extras.h; sourceTree = "<group>"; };
+		D8E0436A1E3B1A0300539FB7 /* radar.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = radar.cpp; sourceTree = "<group>"; wrapsLines = 0; };
+		D8E0436B1E3B1A0300539FB7 /* radar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = radar.h; sourceTree = "<group>"; };
+		D8E0436D1E3B1D4600539FB7 /* RankReveal.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RankReveal.cpp; sourceTree = "<group>"; };
+		D8E0436E1E3B1D4600539FB7 /* RankReveal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RankReveal.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,8 +122,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D82BAC261E3744D4009060DF /* Carbon.framework in Frameworks */,
 				D82BAC241E3744CC009060DF /* ApplicationServices.framework in Frameworks */,
+				D82BAC261E3744D4009060DF /* Carbon.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -155,6 +164,8 @@
 				D82BAC071E372FE0009060DF /* Common.h */,
 				D82BAC0B1E372FE0009060DF /* engine.cpp */,
 				D82BAC0C1E372FE0009060DF /* engine.h */,
+				D83412CB1E3E283600F950F8 /* PlayerResourceManager */,
+				D8E043691E3B19F400539FB7 /* RadarManager */,
 				D8A1BB511E3A18A5008278DD /* FeatureManager */,
 				D81707B61E3931430087DED6 /* GlowManager */,
 				D82BAC451E37989A009060DF /* KeyManager */,
@@ -257,6 +268,8 @@
 				D8CC6EC51E39C24600519F9E /* Extras.h */,
 				D8A1BB4B1E3A113E008278DD /* TriggerBot.cpp */,
 				D8A1BB4C1E3A113E008278DD /* TriggerBot.h */,
+				D8E0436D1E3B1D4600539FB7 /* RankReveal.cpp */,
+				D8E0436E1E3B1D4600539FB7 /* RankReveal.h */,
 			);
 			path = Features;
 			sourceTree = "<group>";
@@ -267,6 +280,15 @@
 				D82BAC461E3798AD009060DF /* Keys.h */,
 			);
 			path = KeyManager;
+			sourceTree = "<group>";
+		};
+		D83412CB1E3E283600F950F8 /* PlayerResourceManager */ = {
+			isa = PBXGroup;
+			children = (
+				D83412CC1E3E284800F950F8 /* resource.cpp */,
+				D83412CD1E3E284800F950F8 /* resource.h */,
+			);
+			path = PlayerResourceManager;
 			sourceTree = "<group>";
 		};
 		D89F6CEC1E38965300A7A635 /* ToolManager */ = {
@@ -311,6 +333,15 @@
 				D8BF6AFB1E3A5311007B8769 /* init.h */,
 			);
 			path = InitManager;
+			sourceTree = "<group>";
+		};
+		D8E043691E3B19F400539FB7 /* RadarManager */ = {
+			isa = PBXGroup;
+			children = (
+				D8E0436A1E3B1A0300539FB7 /* radar.cpp */,
+				D8E0436B1E3B1A0300539FB7 /* radar.h */,
+			);
+			path = RadarManager;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -380,14 +411,17 @@
 				D8BF6AFC1E3A5311007B8769 /* init.cpp in Sources */,
 				D81707B91E3931560087DED6 /* glow.cpp in Sources */,
 				D82BAC331E37741C009060DF /* engineClient.cpp in Sources */,
+				D8E0436F1E3B1D4600539FB7 /* RankReveal.cpp in Sources */,
 				D89F6CE51E388A9A00A7A635 /* BunnyHop.cpp in Sources */,
 				D8CC6EC61E39C24600519F9E /* Extras.cpp in Sources */,
 				D82BAC281E3744E9009060DF /* memory.cpp in Sources */,
 				D89F6CF41E38A07400A7A635 /* weapons.cpp in Sources */,
 				D82BAC291E3744F0009060DF /* offsetMGR.cpp in Sources */,
+				D83412CE1E3E284800F950F8 /* resource.cpp in Sources */,
 				D89F6CDF1E3878AC00A7A635 /* GlowEsp.cpp in Sources */,
 				D89F6CEF1E38966800A7A635 /* bsp.cpp in Sources */,
 				D82BAC2C1E374849009060DF /* pattern.cpp in Sources */,
+				D8E0436C1E3B1A0300539FB7 /* radar.cpp in Sources */,
 				D8A1BB541E3A18CE008278DD /* feature.cpp in Sources */,
 				D89F6D011E38DA0F00A7A635 /* ConvertUTF.c in Sources */,
 				D82BAC2D1E37591D009060DF /* entity.cpp in Sources */,
@@ -488,7 +522,17 @@
 		D82BAC041E372F99009060DF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+					"$(LOCAL_LIBRARY_DIR)/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				PRODUCT_NAME = gosx;
 			};
 			name = Debug;
@@ -496,7 +540,17 @@
 		D82BAC051E372F99009060DF /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+					"$(LOCAL_LIBRARY_DIR)/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				PRODUCT_NAME = gosx;
 			};
 			name = Release;

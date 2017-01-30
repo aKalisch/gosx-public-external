@@ -115,12 +115,12 @@ bool cMemoryManager::retrieveModule(const char* moduleName) {
     return false;
 }
 
-Byte * cMemoryManager::readModule(vm_address_t moduleStart, size_t moduleSize)
+Byte * cMemoryManager::readModule(sModule module)
 {
     uint8_t * buffer = nullptr;
     vm_offset_t readMem;
-    mach_msg_type_number_t sizeMax = (mach_msg_type_number_t)moduleSize;
-    vm_read(_PHandle, (vm_address_t)moduleStart, sizeMax, &readMem, &sizeMax);
+    mach_msg_type_number_t sizeMax = (mach_msg_type_number_t)module.size;
+    vm_read(_PHandle, (vm_address_t)module.base, sizeMax, &readMem, &sizeMax);
     uint64_t address = (uint64_t)readMem;
     buffer = (uint8_t *)address;
     

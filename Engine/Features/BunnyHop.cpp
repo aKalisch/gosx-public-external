@@ -19,14 +19,14 @@ void cBunnyHop::apply() {
         return;
     }
     
+    Vector velocity = localPlayer->GetVelocity();
     if(
-       localPlayer->GetVelocity().x != 0 &&
-       localPlayer->GetVelocity().y != 0 &&
+       velocity.x != 0 &&
+       velocity.y != 0 &&
        EngineFactory->GetKeyManager()->isPressed(kVK_Space) &&
        !localPlayer->isInAir()
     )
     {
-        
         int randomDelay = ((rand()%(1000-600 + 1) + 600) * 10);
         usleep(randomDelay);
         localPlayer->forceJump();

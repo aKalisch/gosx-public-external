@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <cctype>
 #include <cstdlib>
+#include <wchar.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include <fstream>
@@ -23,6 +24,7 @@
 #define FL_ONGROUND (1 << 0)
 
 enum eTeam {
+    TEAM_UInit = -1,
 	TEAM_Unk = 0,
 	TEAM_Unk2,
 	TEAM_T,
@@ -31,16 +33,16 @@ enum eTeam {
 
 struct sGlowEntity {
 public:
-	uint64_t entityPointer;         // 0x0  => 0x8  (len: 0x8)
-    float r;                        // 0x8  => 0xC  (len: 0x4)
-    float g;                        // 0xC  => 0x10 (len: 0x4)
-    float b;                        // 0x10 => 0x14 (len: 0x4)
-    float a;                        // 0x14 => 0x18 (len: 0x4)
-	char unk1[0x10];                // 0x18 => 0x28 (len: 0x10)
-	bool RenderWhenOccluded;        // 0x28 => 0x29 (len: 0x1)
-	bool RenderWhenUnoccluded;      // 0x29 => 0x2A (len: 0x1)
-	bool FullBloom;                 // 0x2A => 0x2B (len: 0x1)
-	char unk2[0x15];                // 0x2B => 0x40 (len: 0x15)
+	uint64_t entityPointer;
+    float r;
+    float g;
+    float b;
+    float a;
+	char unk1[0x10];
+	bool RenderWhenOccluded;
+	bool RenderWhenUnoccluded;
+	bool FullBloom;
+	char unk2[0x15];
     
     bool isValidGlowEntity() {
         return entityPointer != 0x0;

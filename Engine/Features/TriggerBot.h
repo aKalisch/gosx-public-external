@@ -20,7 +20,7 @@ public:
     cTriggerBot(cEngine* engine);
     void apply();
 private:
-    bool canHit(Vector hitboxMin, Vector hitboxMax);
+    bool canHit(Vector locPostOffset, QAngle locViewAngle, Vector hitboxMin, Vector hitboxMax);
     void burstShot(int delay);
     cEngine* engineFactory;
     cEntityManager* LocalPlayer;

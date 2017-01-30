@@ -16,6 +16,7 @@ public:
 	cEntityManager(cMemoryManager* memManager, cOffsetManager* offManager);
     
     // Getters
+    uint64_t        GetPointer();
 	int             GetHealth();
 	Byte            GetFlags();
 	int             GetGlowIndex();
@@ -40,6 +41,7 @@ public:
     bool        isInAir();
     bool        isDormant();
 	bool        isValidLivePlayer();
+    bool        isValidPlayer();
     bool        isValidGlowEntity();
     bool        isAttacking();
     bool        isAttacking2();
@@ -50,6 +52,7 @@ public:
     bool        isWeapon();
     bool        isBomb();
     bool        isChicken();
+    bool        isPlayer();
     
     // Actions
     void        forceJump();
@@ -60,6 +63,7 @@ public:
     void        setGlow(sGlowEntity glow, int index);
     void        setGlow(sGlowEntity glow);
     void        setFlashAlpha(float alpha);
+    void        setBoneMatrixBones();
     
     template<typename T>
     std::vector<T> split(const T & str, const T & delimiters)
@@ -93,6 +97,10 @@ private:
     uint64_t boneMatrixPointer = 0xF;
     uint64_t GetBoneMatrixPointer();
     Vector PositionOffset = {0.123456f, 0.f, 0.f};
+    std::string entityClass = "void";
+    eTeam team = TEAM_UInit;
+    bool bonesInitialized = false;
+    Matrix3x4 entityBones[9];
 };
 
 #endif

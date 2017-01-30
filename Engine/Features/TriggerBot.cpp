@@ -14,9 +14,9 @@ cTriggerBot::cTriggerBot(cEngine* engine) {
     bsp = engineFactory->GetBspParser();
 }
 
-bool cTriggerBot::canHit(Vector hitboxMin, Vector hitboxMax) {
-    Vector viewDirection = cMath::AngleToDirection(LocalPlayer->GetViewAngle());
-    cViewRay* ray = new cViewRay(LocalPlayer->GetPositionOffset(), viewDirection);
+bool cTriggerBot::canHit(Vector locPostOffset, QAngle locViewAngle, Vector hitboxMin, Vector hitboxMax) {
+    Vector viewDirection = cMath::AngleToDirection(locViewAngle);
+    cViewRay* ray = new cViewRay(locPostOffset, viewDirection);
     float distance;
     
     if (!ray->Trace(hitboxMin, hitboxMax, distance))
@@ -43,19 +43,25 @@ void cTriggerBot::apply() {
         return;
     }
     if (LocalPlayer->isPressingAlt()) {
-        for(int i = 1; i < engineFactory->GetEngineClient()->getMaxPlayers(); i++)
-        {
+        eTeam lTeam = LocalPlayer->GetTeam();
+        Vector posOffset = LocalPlayer->GetPositionOffset();
+        QAngle locViewAngle = LocalPlayer->GetViewAngle();
+        for(int i = 1; i < engineFactory->GetEngineClient()->getMaxPlayers(); i++) {
             cEntityManager* entity = engineFactory->GetEntity(i);
             if(!entity->isValidLivePlayer())
             {
                 continue;
             }
             
+            if(lTeam == entity->GetTeam()) {
+                delete entity;
+                continue;
+            }
+            entity->setBoneMatrixBones();
             Hitbox_t hitbox;
             Vector entityHitbox;
             bool triggerCanHit =  false;
-            for(int b = BONE_PELVIS; b <= BONE_HEAD; b++)
-            {
+            for(int b = BONE_PELVIS; b <= BONE_HEAD; b++) {
                 hitbox = hitboxMngr->getHitboxByBone(b);
                 
                 if(b != hitbox.iBone) {
@@ -63,15 +69,14 @@ void cTriggerBot::apply() {
                 }
                 
                 entityHitbox = entity->GetBonePosition(hitbox.iBone);
-                
-                if(!bsp->isVisible(LocalPlayer->GetPositionOffset(), entityHitbox)) {
+                if(!bsp->isVisible(posOffset, entityHitbox)) {
                     continue;
                 }
                 
                 Vector hitboxMin = entityHitbox + hitbox.vMin;
                 Vector hitboxMax = entityHitbox + hitbox.vMax;
                 
-                if(!canHit(hitboxMin, hitboxMax)) {
+                if(!canHit(posOffset, locViewAngle, hitboxMin, hitboxMax)) {
                     continue;
                 }
                 
@@ -79,20 +84,12 @@ void cTriggerBot::apply() {
             }
             
             if(!triggerCanHit) {
+                delete entity;
                 continue;
             }
             
-            if (
-                !cWeaponManager::isPistol(currentWeapon) &&
-                !cWeaponManager::isSniper(currentWeapon) &&
-                !cWeaponManager::isShotgun(currentWeapon) &&
-                settingsManager->GetTriggerBurstShot()
-            ) {
-                burstShot(cWeaponManager::getDelay(currentWeapon) * 1000);
-            } else {
-                usleep(cWeaponManager::getDelay(currentWeapon) * 1000);
-                LocalPlayer->forceAttack();
-            }
+            LocalPlayer->forceAttack();
+            usleep(cWeaponManager::getDelay(currentWeapon) * 1000);
             
             delete entity;
         }

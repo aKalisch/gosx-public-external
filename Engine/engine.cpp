@@ -12,13 +12,18 @@ void cEngine::Refresh() {
 void cEngine::_initEngine(const char* processName) {
     Mem = new cMemoryManager(_pName);
     Offset = new cOffsetManager(Mem);
+    SettingsManager = new cSettingsManager();
     EngineClient = new cEngineClient(Mem, Offset);
     if(EngineClient->isInGame()) {
-        BspParser = new cBspParser(EngineClient->GetGameDirectory(), EngineClient->GetMapFile());
-        BspParser->readBSP(true);
+        if(currentMap == "") {
+            currentMap = EngineClient->GetMapFile();
+            BspParser = new cBspParser(EngineClient->GetGameDirectory(), currentMap);
+            BspParser->readBSP();
+            GlowManager = new cGlowManager(Mem, Offset);
+            RadarManager = new cRadarManager(Mem, Offset);
+            PlayerResource = new cPlayerResource(Mem, Offset);
+        }
     }
-    SettingsManager = new cSettingsManager();
-    GlowManager = new cGlowManager(Mem, Offset);
 }
 
 cMemoryManager* cEngine::GetMemory() {
@@ -54,15 +59,24 @@ cGlowManager* cEngine::GetGlowManager() {
 }
 
 cBspParser* cEngine::GetBspParser() {
-    if(EngineClient->isInGame() && EngineClient->GetMapFile() != BspParser->GetMapFile()) {
-        BspParser->SetMapFile(EngineClient->GetMapFile());
-        BspParser->readBSP(true);
+    if(currentMap != "" && currentMap != BspParser->GetMapFile()) {
+        currentMap = EngineClient->GetMapFile();
+        BspParser->SetMapFile(currentMap);
+        BspParser->readBSP();
     }
     return BspParser;
 }
 
 cSettingsManager* cEngine::GetSettingsManager() {
     return SettingsManager;
+}
+
+cRadarManager* cEngine::GetRadarManager() {
+    return RadarManager;
+}
+
+cPlayerResource* cEngine::GetPlayerResource() {
+    return PlayerResource;
 }
 
 int cEngine::GetPid() {

@@ -19,6 +19,10 @@ cEntityManager::cEntityManager(cMemoryManager* memManager, cOffsetManager* offMa
 	entityPointer = memoryManager->read<uint64_t>(offsetManager->client.m_dwLocalPlayer);
 }
 
+uint64_t cEntityManager::GetPointer() {
+    return entityPointer;
+}
+
 int cEntityManager::GetHealth() {
     return memoryManager->read<int>(entityPointer + offsetManager->client.m_iHealth);
 }
@@ -28,7 +32,11 @@ Byte cEntityManager::GetFlags() {
 }
 
 eTeam cEntityManager::GetTeam() {
-    return memoryManager->read<eTeam>(entityPointer + offsetManager->client.m_iTeam);
+    if(team == -1) {
+        team = memoryManager->read<eTeam>(entityPointer + offsetManager->client.m_iTeam);
+    }
+    
+    return team;
 }
 
 bool cEntityManager::isInAir() {
@@ -115,6 +123,11 @@ const Vector cEntityManager::GetPositionOffset() {
     return GetVecOrigin() + GetViewOffset();
 }
 
+void cEntityManager::setBoneMatrixBones() {
+    for(int i = BONE_PELVIS; i < BONE_MAX; i++) {
+        entityBones[i] = memoryManager->read<Matrix3x4>(GetBoneMatrixPointer() + (offsetManager->client.m_dwBoneDistance * i));
+    }
+}
 Vector cEntityManager::GetBonePosition(int bone) {
     Matrix3x4 m_bone = memoryManager->read<Matrix3x4>(GetBoneMatrixPointer() + (offsetManager->client.m_dwBoneDistance * bone));
     
@@ -181,27 +194,41 @@ sGlowEntity cEntityManager::GetGlowObject() {
 }
 
 bool cEntityManager::isValidLivePlayer() {
-	int HP = GetHealth();
-	eTeam TM = GetTeam();
+    int HP = GetHealth();
+    eTeam TM = GetTeam();
     if (
         entityPointer != 0x0 &&
         !isDormant() &&
         (HP > 0 && HP <= 100) &&
         (TM == TEAM_CT || TM == TEAM_T)
-    ) {
-		return true;
+        ) {
+        return true;
     }
-	return false;
+    return false;
+}
+
+bool cEntityManager::isValidPlayer() {
+    eTeam TM = GetTeam();
+    if (
+        entityPointer != 0x0 &&
+        (TM == TEAM_CT || TM == TEAM_T)
+    ) {
+        return true;
+    }
+    return false;
 }
 
 std::string cEntityManager::GetEntityClass() {
-    uint64_t vtable = memoryManager->read<uint64_t>(entityPointer + 0x8);
-    uint64_t fn     = memoryManager->read<uint64_t>(vtable - 0x8);
-    uint64_t cls    = memoryManager->read<uint64_t>(fn + 0x8);
-    std::string cn  = memoryManager->readstring(cls);
-    std::vector<std::string> clsName = split<std::string>(cn, "_");
+    if(entityClass == "void") {
+        uint64_t vtable = memoryManager->read<uint64_t>(entityPointer + 0x8);
+        uint64_t fn     = memoryManager->read<uint64_t>(vtable - 0x8);
+        uint64_t cls    = memoryManager->read<uint64_t>(fn + 0x8);
+        std::string cn  = memoryManager->readstring(cls);
+        std::vector<std::string> clsName = split<std::string>(cn, "_");
         
-    return clsName[1];
+        entityClass = clsName[1];
+    }
+    return entityClass;
 }
 
 bool cEntityManager::isWeapon() {
@@ -212,17 +239,20 @@ bool cEntityManager::isChicken() {
     return GetEntityClass() == "CChicken";
 }
 
+bool cEntityManager::isPlayer() {
+    return GetEntityClass() == "CSPlayer";
+}
+
 bool cEntityManager::isBomb() {
-    std::string className = GetEntityClass();
-    size_t classNameLength = className.length();
+    size_t classNameLength = GetEntityClass().length();
     if(classNameLength == 0) {
         return false;
     }
-    return className.substr(classNameLength - 2, classNameLength) == "C4";
+    return GetEntityClass().substr(classNameLength - 2, classNameLength) == "C4";
 }
 
 bool cEntityManager::isValidGlowEntity() {
-    return entityPointer != 0x0 && (isWeapon() || isBomb() || isChicken());
+    return entityPointer != 0x0 && (isWeapon() || isBomb() || isPlayer());
 }
 
 float cEntityManager::GetFlashAlpha() {

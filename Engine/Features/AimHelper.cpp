@@ -15,7 +15,7 @@ cAimHelper::cAimHelper(cEngine* engine) {
     bsp = engineFactory->GetBspParser();
 }
 
-int cAimHelper::getBestBone(cEntityManager* entity)
+int cAimHelper::getBestBone(Vector posOffset, QAngle locViewAngle, cEntityManager* entity)
 {
     int bestBone = 7;
     float closestBone = settingsManager->GetFieldOfView();
@@ -24,14 +24,14 @@ int cAimHelper::getBestBone(cEntityManager* entity)
         Hitbox_t hitbox = hitboxManager->getHitbox(i);
         Vector bone = entity->GetBonePosition(hitbox.iBone);
         cBspParser* bsp = engineFactory->GetBspParser();
-        if(!bsp->isVisible(LocalPlayer->GetPositionOffset(), bone))
+        if(!bsp->isVisible(posOffset, bone))
         {
             continue;
         }
         
         float fov = cMath::GetFov(
-            LocalPlayer->GetViewAngle(),
-            LocalPlayer->GetPositionOffset(),
+            locViewAngle,
+            posOffset,
             bone
         );
         
@@ -45,15 +45,15 @@ int cAimHelper::getBestBone(cEntityManager* entity)
     return bestBone;
 }
 
-int cAimHelper::findTarget()
+cEntityManager* cAimHelper::findTarget(Vector posOffset, QAngle locViewAngle)
 {
     float m_bestfov = settingsManager->GetFieldOfView();
     float m_bestdist = 8192.0f;
     float m_bestthreat = 0.0f;
-    int m_bestent = -1;
+    cEntityManager* m_bestent = nullptr;
     cEngineClient* engineClient = engineFactory->GetEngineClient();
-    Vector posOffset = LocalPlayer->GetPositionOffset();
-    QAngle viewAngle = LocalPlayer->GetViewAngle();
+    eTeam lTeam = LocalPlayer->GetTeam();
+    
     for(int i = 1; i <= engineClient->getMaxPlayers(); i++) {
         cEntityManager* entity = engineFactory->GetEntity(i);
         if(!entity->isValidLivePlayer()) {
@@ -61,48 +61,49 @@ int cAimHelper::findTarget()
             continue;
         }
         
-        if(LocalPlayer->GetTeam() == entity->GetTeam()) {
+        if(lTeam == entity->GetTeam()) {
             reset();
             continue;
         }
         
-        if(entity->isInAir()) {
+        /*if(entity->isInAir()) {
             // reset();
             // continue;
-        }
+        }*/
         
-        int aimBone = getBestBone(entity);
+        int aimBone = getBestBone(posOffset, locViewAngle, entity);
         Vector hitbox = entity->GetBonePosition(aimBone);
         
         if(settingsManager->GetVisibilityCheck() && !bsp->isVisible(posOffset, hitbox))
         {
+            reset();
             continue;
         }
         
         if(settingsManager->GetAimTarget() == "crosshair")
         {
-            float fov = cMath::GetFov(viewAngle, posOffset, hitbox);
+            float fov = cMath::GetFov(locViewAngle, posOffset, hitbox);
             if(fov < m_bestfov)
             {
                 m_bestfov = fov;
-                m_bestent = i;
+                m_bestent = entity;
             }
         }
         
         if(settingsManager->GetAimTarget() == "closest")
         {
-            float fov = cMath::GetFov(viewAngle, posOffset, hitbox);
+            float fov = cMath::GetFov(locViewAngle, posOffset, hitbox);
             float dist = cMath::VecDist(posOffset, hitbox);
             if(dist < m_bestdist && fov < m_bestfov)
             {
                 m_bestdist = dist;
-                m_bestent = i - 1;
+                m_bestent = entity;
             }
         }
         
         if(settingsManager->GetAimTarget() == "threat")
         {
-            float fov = cMath::GetFov(viewAngle, posOffset, hitbox);
+            float fov = cMath::GetFov(locViewAngle, posOffset, hitbox);
             float dist = cMath::VecDist(posOffset, hitbox);
             float health = (float)entity->GetHealth();
             
@@ -111,10 +112,9 @@ int cAimHelper::findTarget()
             if( threat > m_bestthreat && fov < m_bestfov )
             {
                 m_bestthreat = threat;
-                m_bestent = i - 1;
+                m_bestent = entity;
             }
         }
-        delete entity;
     }
     return m_bestent;
 }
@@ -125,14 +125,14 @@ void cAimHelper::VelocityComp(Vector& EnemyPos, Vector EnemyVecVelocity, Vector 
     EnemyPos -= PlayerVecVelocity * 0.15f;
 }
 
-void cAimHelper::aimTarget(cEntityManager* entity, int entityIndex)
+void cAimHelper::aimTarget(Vector posOffset, QAngle locViewAngle, cEntityManager* entity)
 {
     QAngle AimAngles;
     
     int currentWeapon = LocalPlayer->GetActiveWeaponEntityID();
     int aimBone;
     if(m_lockedBone == -5) {
-        aimBone = getBestBone(entity);
+        aimBone = getBestBone(posOffset, locViewAngle, entity);
         m_lockedBone = aimBone;
     } else {
         aimBone = m_lockedBone;
@@ -158,7 +158,7 @@ void cAimHelper::aimTarget(cEntityManager* entity, int entityIndex)
 
     if(settingsManager->GetSmoothAiming() && cWeaponManager::needsSmooth(currentWeapon))
     {
-        cMath::SmoothAngle(LocalPlayer->GetViewAngle(), AimAngles, settingsManager->GetSmoothingFactor());
+        cMath::SmoothAngle(locViewAngle, AimAngles, settingsManager->GetSmoothingFactor());
     }
     
     engineFactory->GetEngineClient()->setViewAngles(AimAngles);
@@ -166,16 +166,21 @@ void cAimHelper::aimTarget(cEntityManager* entity, int entityIndex)
 
 void cAimHelper::reset() {
     m_lockedBone = -5;
-    m_lockedEntity = -5;
+    m_lockedEntity = nullptr;
 }
 
 void cAimHelper::apply()
 {
-    LocalPlayer = engineFactory->GetLocalEntity();
-    if(!LocalPlayer->isValidLivePlayer()) {
+    if(LocalPlayer == nullptr) {
+        LocalPlayer = engineFactory->GetLocalEntity();
+    }
+    if(LocalPlayer == nullptr || !LocalPlayer->isValidLivePlayer()) {
         reset();
         return;
     }
+    
+    Vector posOffset = LocalPlayer->GetPositionOffset();
+    QAngle viewAngle = LocalPlayer->GetViewAngle();
     
     if(LocalPlayer->isInAir())
     {
@@ -204,10 +209,10 @@ void cAimHelper::apply()
         return;
     }
     
-    int closest = -1;
-    if(m_lockedEntity == -5) {
-        closest = this->findTarget();
-        if(closest == -1)
+    cEntityManager* closest = nullptr;
+    if(m_lockedEntity == nullptr) {
+        closest = findTarget(posOffset, viewAngle);
+        if(closest == nullptr || !closest->isValidLivePlayer())
         {
             reset();
             return;
@@ -217,12 +222,10 @@ void cAimHelper::apply()
         closest = m_lockedEntity;
     }
     
-    cEntityManager* entity = engineFactory->GetEntity(closest);
-    if(!entity->isValidLivePlayer()) {
+    if(closest == nullptr || !closest->isValidLivePlayer()) {
         reset();
         return;
     }
     
-    aimTarget(entity, closest);
-    delete entity;
+    aimTarget(posOffset, viewAngle, closest);
 }

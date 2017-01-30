@@ -10,6 +10,8 @@
 #include "entity.h"
 #include "engineClient.h"
 #include "glow.h"
+#include "radar.h"
+#include "resource.h"
 
 #include "Keys.h"
 #include "bsp.h"
@@ -37,12 +39,16 @@ public:
     cSettingsManager* GetSettingsManager();
     cGlowManager* GlowManager;
     cGlowManager* GetGlowManager();
+    cRadarManager* RadarManager;
+    cRadarManager* GetRadarManager();
+    cPlayerResource* PlayerResource;
+    cPlayerResource* GetPlayerResource();
     
     int GetPid();
     int GetTask();
 private:
     const char* _pName;
-    std::string currentMap;
+    std::string currentMap = "";
 };
 
 #endif

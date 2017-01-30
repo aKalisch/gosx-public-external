@@ -17,18 +17,18 @@ class cAimHelper
 {
 public:
     cAimHelper(cEngine* engine);
-    int getBestBone(cEntityManager* entity);
-    int findTarget();
+    int getBestBone(Vector posOffset, QAngle locViewAngle, cEntityManager* entity);
+    cEntityManager* findTarget(Vector posOffset, QAngle locViewAngle);
     void VelocityComp(Vector& EnemyPos, Vector EnemyVecVelocity, Vector PlayerVecVelocity);
-    void aimTarget(cEntityManager* enemy, int entityIndex);
+    void aimTarget(Vector posOffset, QAngle locViewAngle, cEntityManager* enemy);
     void reset();
     void apply();
 protected:
-    int m_lockedEntity = -5;
+    cEntityManager* m_lockedEntity = nullptr;
     int m_lockedBone = -5;
 private:
     cEngine* engineFactory;
-    cEntityManager* LocalPlayer;
+    cEntityManager* LocalPlayer = nullptr;
     cHitboxManager* hitboxManager;
     cSettingsManager* settingsManager;
     cBspParser* bsp;

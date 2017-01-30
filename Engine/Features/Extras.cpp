@@ -72,31 +72,35 @@ void cExtraManager::KnifeBot() {
         return;
     }
     
+    int currentWeapon = LocalPlayer->GetActiveWeaponEntityID();
+    if(!cWeaponManager::isKnife(currentWeapon)) {
+        return;
+    }
+    
+    eTeam lTeam = LocalPlayer->GetTeam();
+    Vector posOffset = LocalPlayer->GetPositionOffset();
+    QAngle locViewAngle = LocalPlayer->GetViewAngle();
     for(int i = 1; i < engineFactory->GetEngineClient()->getMaxPlayers(); i++) {
-        int currentWeapon = LocalPlayer->GetActiveWeaponEntityID();
-        if(!cWeaponManager::isKnife(currentWeapon)) {
-            continue;
-        }
-        
         cEntityManager* entity = engineFactory->GetEntity(i);
         if(!entity->isValidLivePlayer()) {
             continue;
         }
         
-        if(LocalPlayer->GetTeam() == entity->GetTeam()) {
+        if(lTeam == entity->GetTeam()) {
+            delete entity;
             continue;
         }
-        
+        entity->setBoneMatrixBones();
         Vector hitbox = entity->GetBonePosition(5);
-        float dist = cMath::VecDist(LocalPlayer->GetPositionOffset(), hitbox);
-        
-        if(dist > 64) {
+        float fov = cMath::GetFov(locViewAngle, posOffset, hitbox);
+        if(fov > 30) {
+            delete entity;
             continue;
         }
         
-        float fov = cMath::GetFov(LocalPlayer->GetViewAngle(), LocalPlayer->GetPositionOffset(), hitbox);
-        
-        if(fov > 50) {
+        float dist = cMath::VecDist(posOffset, hitbox);
+        if(dist > 67) {
+            delete entity;
             continue;
         }
         
@@ -107,22 +111,6 @@ void cExtraManager::KnifeBot() {
 
 void cExtraManager::AutoDuck() {
     if(!LocalPlayer->isValidLivePlayer()) {
-        return;
-    }
-    
-    if(
-       !engineFactory->GetKeyManager()->isPressed(kVK_Shift) &&
-       !engineFactory->GetKeyManager()->isPressed(kVK_Control)
-    ) {
-        LocalPlayer->forceDuck();
-        return;
-    }
-    
-    if(LocalPlayer->isInAir()) {
-        return;
-    }
-    
-    if(LocalPlayer->GetHasMovedSinceSpawn()) {
         return;
     }
     
@@ -137,9 +125,26 @@ void cExtraManager::AutoDuck() {
         return;
     }
     
-    int shotsFiredAmount = 1;
+    if(LocalPlayer->isInAir()) {
+        return;
+    }
     
-    if(LocalPlayer->GetShotsFired() < shotsFiredAmount) {
+    if(LocalPlayer->GetHasMovedSinceSpawn()) {
+        return;
+    }
+    
+    if(
+       !engineFactory->GetKeyManager()->isPressed(kVK_Shift) &&
+       !engineFactory->GetKeyManager()->isPressed(kVK_Control)
+    ) {
+        LocalPlayer->forceDuck();
+        return;
+    }
+    
+    int shotsFiredAmount = 1;
+    int currShotsFired = LocalPlayer->GetShotsFired();
+    
+    if(currShotsFired < shotsFiredAmount) {
         return;
     }
     
@@ -147,7 +152,7 @@ void cExtraManager::AutoDuck() {
         return;
     }
     
-    if(LocalPlayer->GetActiveWeaponData().m_clip1 == 0 && LocalPlayer->GetShotsFired() == 0) {
+    if(LocalPlayer->GetActiveWeaponData().m_clip1 == 0 && currShotsFired == 0) {
         LocalPlayer->forceDuck();
         return;
     }

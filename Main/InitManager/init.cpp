@@ -57,8 +57,5 @@ void cInitManager::InitHack(cEngine* engine) {
         isIngame = engine->GetEngineClient()->isInGame();
     }
     
-    while(!engine->GetLocalEntity()->isValidLivePlayer()) {
-        usleep(100000);
-    }
     engine->Refresh();
 }

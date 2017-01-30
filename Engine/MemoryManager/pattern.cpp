@@ -10,20 +10,20 @@
 
 cPatternScanner::cPatternScanner(cMemoryManager * memMngr, sModule module) {
     mem = memMngr;
-    readBuffer(module.base, module.size);
+    readBuffer(module);
 }
 
 cPatternScanner::~cPatternScanner() {
     unload();
 }
 
-void cPatternScanner::readBuffer(uint64_t dwStart, size_t dwSize)
+void cPatternScanner::readBuffer(sModule module)
 {
-    pRemote = new Byte[dwSize];
-    bufferSize = dwSize;
-    moduleStart = dwStart;
+    pRemote = new Byte[module.size];
+    bufferSize = module.size;
+    moduleStart = module.base;
     
-    pRemote = mem->readModule(moduleStart, bufferSize);
+    pRemote = mem->readModule(module);
 }
 
 void cPatternScanner::unload()

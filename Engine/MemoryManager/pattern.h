@@ -9,13 +9,13 @@
 #ifndef pattern_hpp
 #define pattern_hpp
 
-#include "../MemoryManager/memory.h"
+#include "memory.h"
 
 class cPatternScanner {
 public:
     cPatternScanner(cMemoryManager * memMngr, sModule module);
 
-    void readBuffer(uint64_t dwStart, size_t dwSize);
+    void readBuffer(sModule module);
     void unload();
     bool maskCheck(int nOffset, Byte* btPattern, const char * strMask, int sigLength);
     uint64_t scan(Byte* pSignature, const char * pMask, int sigLength);

@@ -22,6 +22,7 @@ struct sClientOffsets {
     uint64_t m_dwForceAlt1;
     uint64_t m_dwForceAlt2;
     uint64_t m_dwRadarBase;
+    uint64_t m_dwPlayerResource;
     
     uint64_t m_dwEntityLoopDistance         = 0x20;
     uint64_t m_dwBoneDistance               = 0x30;
@@ -52,8 +53,6 @@ struct sClientOffsets {
     uint64_t m_flFlashDuration              = 0xABF8;
     uint64_t m_iGlowIndex                   = 0xAC10;
     uint64_t m_dwCrosshairID                = 0xB390;
-    uint64_t m_iCompetitiveRanking          = 0x20DC;
-    uint64_t m_iCompetitiveWins             = 0x21E0;
     uint64_t m_viewPunchAngle               = m_Local + 0x68;
     uint64_t m_aimPunchAngle                = m_Local + 0x74;
     uint64_t m_aimPunchAngleVel             = m_Local + 0x80;
@@ -65,6 +64,23 @@ struct sClientOffsets {
     uint64_t m_iPrimaryReserveAmmoCount     = 0x3A6C;
     uint64_t m_iSecondaryReserveAmmoCount   = 0x3A70;
     uint64_t m_dwRealWeaponID               = m_AttributeManager + m_Item + m_iItemDefinitionIndex;
+    
+    uint64_t m_dwRadarStructBase            = 0x108;
+    uint64_t m_dwRadarDistance              = 0x370;
+    uint64_t m_dwRadarArray                 = 0x1E4;
+    uint64_t m_iRadarHealth                 = 0x168;
+    uint64_t m_szRadarName                  = 0x16C;
+    
+    uint64_t m_iKills                       = 0x1288;
+    uint64_t m_iAssists                     = 0x138C;
+    uint64_t m_iDeaths                      = 0x1490;
+    uint64_t m_bConnected                   = 0x1594;
+    uint64_t m_bHasDefuser                  = 0x1E51;
+    uint64_t m_bHasHelmet                   = 0x1E92;
+    uint64_t m_iArmor                       = 0x1ED8;
+    uint64_t m_iCompetitiveRanking          = 0x20E0;
+    uint64_t m_iCompetitiveWins             = 0x21E4;
+    
 };
 
 struct sEngineOffsets {
