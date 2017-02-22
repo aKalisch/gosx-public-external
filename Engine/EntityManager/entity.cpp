@@ -32,7 +32,7 @@ Byte cEntityManager::GetFlags() {
 }
 
 eTeam cEntityManager::GetTeam() {
-    if(team == -1) {
+    if(team == TEAM_UInit) {
         team = memoryManager->read<eTeam>(entityPointer + offsetManager->client.m_iTeam);
     }
     
@@ -88,7 +88,8 @@ void cEntityManager::forceDuck(bool on) {
 }
 
 int cEntityManager::GetGlowIndex() {
-	return memoryManager->read<int>(entityPointer + offsetManager->client.m_iGlowIndex);
+	int idx = memoryManager->read<int>(entityPointer + offsetManager->client.m_iGlowIndex);
+    return idx;
 }
 
 Vector cEntityManager::GetVelocity() {
@@ -123,6 +124,22 @@ const Vector cEntityManager::GetPositionOffset() {
     return GetVecOrigin() + GetViewOffset();
 }
 
+uint64_t* cEntityManager::GetAllWeapons() {
+    for(int i = 0; i < 10; i++) {
+        uint32_t weaponHandle = memoryManager->read<uint32_t>(entityPointer + offsetManager->client.m_hMyWeapons + (0x4 * i));
+        if((int)weaponHandle != -1) {
+            weaponArray[i] = memoryManager->read<uint64_t>(
+                offsetManager->client.m_dwEntityList +
+                (((weaponHandle & 0xFFF) - 1) * offsetManager->client.m_dwEntityLoopDistance)
+            );
+        } else {
+            weaponArray[i] = 0x0;
+        }
+    }
+    
+    return weaponArray;
+}
+
 void cEntityManager::setBoneMatrixBones() {
     for(int i = BONE_PELVIS; i < BONE_MAX; i++) {
         entityBones[i] = memoryManager->read<Matrix3x4>(GetBoneMatrixPointer() + (offsetManager->client.m_dwBoneDistance * i));
@@ -134,7 +151,7 @@ Vector cEntityManager::GetBonePosition(int bone) {
     Vector bonePosition = {
         m_bone.m[0][3],
         m_bone.m[1][3],
-        m_bone.m[2][3],
+        m_bone.m[2][3]
     };
     
     return bonePosition;
@@ -228,7 +245,18 @@ std::string cEntityManager::GetEntityClass() {
         
         entityClass = clsName[1];
     }
+    
     return entityClass;
+}
+
+int cEntityManager::GetEntityClassID() {
+    uint64_t vtable = memoryManager->read<uint64_t>(entityPointer + 0x8);
+    uint64_t fn     = memoryManager->read<uint64_t>(vtable + (0x8 * 2));
+    uint64_t cls    = memoryManager->read<uint64_t>(fn + 0x1);
+    
+    int ClassID = memoryManager->read<int>(cls + 0x14);
+    
+    return ClassID;
 }
 
 bool cEntityManager::isWeapon() {

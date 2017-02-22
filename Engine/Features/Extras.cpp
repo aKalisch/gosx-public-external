@@ -46,7 +46,7 @@ void cExtraManager::AutoPistolSwitch() {
        LocalPlayer->GetHealth() > 0 &&
        LocalPlayer->GetShotsFired() == 0
     ) {
-        engineFactory->GetKeyManager()->sendKey(kVK_ANSI_2, 5000);
+        engineFactory->GetKeyManager()->sendKey(kVK_ANSI_2, 125000);
     }
 }
 
@@ -63,7 +63,7 @@ void cExtraManager::AutoPistolToKnifeSwitch() {
        LocalPlayer->GetHealth() > 0 &&
        LocalPlayer->GetShotsFired() == 0
     ) {
-        engineFactory->GetKeyManager()->sendKey(kVK_ANSI_3, 5000);
+        engineFactory->GetKeyManager()->sendKey(kVK_ANSI_3, 125000);
     }
 }
 
@@ -90,7 +90,7 @@ void cExtraManager::KnifeBot() {
             delete entity;
             continue;
         }
-        entity->setBoneMatrixBones();
+        
         Vector hitbox = entity->GetBonePosition(5);
         float fov = cMath::GetFov(locViewAngle, posOffset, hitbox);
         if(fov > 30) {

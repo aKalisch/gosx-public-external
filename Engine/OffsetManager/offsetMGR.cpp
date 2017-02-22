@@ -1,6 +1,6 @@
 #include "offsetMGR.h"
 
-bool debug = false;
+bool debug = true;
 
 cOffsetManager::cOffsetManager(cMemoryManager* memManager) {
 	memoryManager = memManager;

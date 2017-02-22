@@ -14,8 +14,7 @@
 #include "memory.h"
 #include "offsetMGR.h"
 
-static const char *Ranks[] =
-{
+static const char *Ranks[] = {
     "-",
     "Silver I",
     "Silver II",

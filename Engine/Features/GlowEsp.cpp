@@ -16,57 +16,50 @@ cGlowEsp::cGlowEsp(cEngine* engineFactory)  {
 void cGlowEsp::applyGlow() {
     cEntityManager* LocalPlayer = engine->GetLocalEntity();
     cSettingsManager* settings = engine->GetSettingsManager();
-    cGlowManager* glowManager = engine->GetGlowManager();
     
     bool isGotvMode = true;
     eTeam lTeam = TEAM_Unk;
     Vector posOffset = {0, 0, 0};
+    int weaponCounter = 0;
     if(LocalPlayer->isValidLivePlayer()) {
         isGotvMode = false;
         lTeam = LocalPlayer->GetTeam();
         posOffset = LocalPlayer->GetPositionOffset();
+        uint64_t* allWeapons = LocalPlayer->GetAllWeapons();
+        for(int i = 0; i < 10; i++) {
+            if(allWeapons[i] != 0x0) {
+                registeredEntitys[weaponCounter] = allWeapons[i];
+                weaponCounter++;
+            }
+        }
     }
-    
+
     if(isGotvMode) {
         cEngineClient* engineClient = engine->GetEngineClient();
         for (int i = 1; i < engineClient->getMaxPlayers(); i++) {
             cEntityManager* entity = engine->GetEntity(i);
-            if (entity->isValidLivePlayer()) {
-                eTeam eTeam = entity->GetTeam();
-                if(!settings->GetTeamglow() && lTeam == eTeam) {
-                    continue;
-                }
-                
+            if (entity->isValidGlowEntity()) {
                 sGlowEntity glow = entity->GetGlowObject();
-                if(!glow.isValidGlowEntity()) {
-                    continue;
-                }
-                
-                float alpha = settings->GetGlowalpha();
-                std::string colorBase;
-                
-                if(!entity->isValidLivePlayer()) {
-                    continue;
-                }
-                
-                if(!settings->GetTeamglow() && lTeam == eTeam) {
-                    continue;
-                }
-                
-                if(!isGotvMode) {
-                    bool entityIsVisible = bsp->isVisible(posOffset, entity->GetPositionOffset());
-                    if(eTeam == TEAM_T) {
-                        colorBase = settings->GetColorTvisible();
-                        if (entityIsVisible) {
-                            colorBase = settings->GetColorT();
-                        }
-                    } else {
-                        colorBase = settings->GetColorCTvisible();
-                        if(entityIsVisible) {
-                            colorBase = settings->GetColorCT();
-                        }
+                uint64_t* allWeapons = entity->GetAllWeapons();
+                for(int i = 0; i < 10; i++) {
+                    if(allWeapons[i] != 0x0) {
+                        registeredEntitys[weaponCounter] = allWeapons[i];
+                        weaponCounter++;
                     }
-                } else {
+                }
+                if (entity->isValidLivePlayer()) {
+                    eTeam eTeam = entity->GetTeam();
+                    if(!settings->GetTeamglow() && lTeam == eTeam) {
+                        continue;
+                    }
+                    
+                    if(!glow.isValidGlowEntity()) {
+                        continue;
+                    }
+                    
+                    float alpha = settings->GetGlowalpha();
+                    std::string colorBase;
+                    
                     if(glow.RenderWhenOccluded) {
                         delete entity;
                         continue;
@@ -77,31 +70,74 @@ void cGlowEsp::applyGlow() {
                     } else {
                         colorBase = "231,190,90";
                     }
+                    std::vector<std::string> colors = settings->split<std::string>(colorBase, ",");
+                    float red = atof(colors[0].c_str()) / 255;
+                    float green = atof(colors[1].c_str()) / 255;
+                    float blue = atof(colors[2].c_str()) / 255;
+                    
+                    glow.r = red;
+                    glow.g = green;
+                    glow.b = blue;
+                    glow.a = alpha;
+                    glow.RenderWhenOccluded = true;
+                    glow.RenderWhenUnoccluded = false;
+                    
+                    entity->setGlow(glow);
                 }
-                
-                std::vector<std::string> colors = settings->split<std::string>(colorBase, ",");
-                float red = atof(colors[0].c_str()) / 255;
-                float green = atof(colors[1].c_str()) / 255;
-                float blue = atof(colors[2].c_str()) / 255;
-                
-                glow.r = red;
-                glow.g = green;
-                glow.b = blue;
-                glow.a = alpha;
-                glow.RenderWhenOccluded = true;
-                glow.RenderWhenUnoccluded = false;
-                
-                entity->setGlow(glow);
+                delete entity;
             }
-            delete entity;
+        }
+        
+        for(int i = 0; i < weaponCounter; i++) {
+            if(registeredEntitys[i] != 0x0) {
+                cEntityManager* entity = engine->DefineGlowEntity(registeredEntitys[i]);
+                if(entity->isValidGlowEntity()) {
+                    entity->GetEntityClassID();
+                    continue;
+                    sGlowEntity glowObject = entity->GetGlowObject();
+                    
+                    bool isWeapon = entity->isWeapon();
+                    bool isBomb = entity->isBomb();
+                    
+                    float alpha = settings->GetGlowalpha();
+                    std::string colorBase;
+                    
+                    if((isWeapon || isBomb) && glowObject.RenderWhenOccluded) {
+                        continue;
+                    }
+                    
+                    if (isWeapon) {
+                        colorBase = "255,0,0";
+                    } else if (isBomb) {
+                        colorBase = "0,255,0";
+                    } else {
+                        delete entity;
+                        continue;
+                    }
+                    
+                    std::vector<std::string> colors = settings->split<std::string>(colorBase, ",");
+                    float red = atof(colors[0].c_str()) / 255;
+                    float green = atof(colors[1].c_str()) / 255;
+                    float blue = atof(colors[2].c_str()) / 255;
+                    
+                    glowObject.r = red;
+                    glowObject.g = green;
+                    glowObject.b = blue;
+                    glowObject.a = alpha;
+                    glowObject.RenderWhenOccluded = true;
+                    glowObject.RenderWhenUnoccluded = false;
+                    
+                    entity->setGlow(glowObject);
+                }
+            }
         }
     } else {
+        cGlowManager* glowManager = engine->GetGlowManager();
         for(int i = 0; i < glowManager->GetGlowCount(); i++) {
             sGlowEntity gEntity = glowManager->GetGlowEntity(i);
             if(gEntity.isValidGlowEntity()) {
                 cEntityManager* entity = engine->DefineGlowEntity(gEntity.entityPointer);
                 if(entity->isValidGlowEntity()) {
-                    printf("01\n");
                     
                     bool isWeapon = entity->isWeapon();
                     bool isBomb = entity->isBomb();
@@ -114,59 +150,39 @@ void cGlowEsp::applyGlow() {
                         if(!entity->isValidLivePlayer()) {
                             continue;
                         }
-                        printf("2\n");
                         
                         eTeam eTeam = entity->GetTeam();
                         if(!settings->GetTeamglow() && lTeam == eTeam) {
                             continue;
                         }
-                        printf("3\n");
                         
-                        if(!isGotvMode) {
-                            bool entityIsVisible = bsp->isVisible(posOffset, entity->GetPositionOffset());
-                            if(eTeam == TEAM_T) {
-                                colorBase = settings->GetColorTvisible();
-                                if (entityIsVisible) {
-                                    colorBase = settings->GetColorT();
-                                }
-                            } else {
-                                colorBase = settings->GetColorCTvisible();
-                                if(entityIsVisible) {
-                                    colorBase = settings->GetColorCT();
-                                }
+                        bool entityIsVisible = bsp->isVisible(posOffset, entity->GetPositionOffset());
+                        if(eTeam == TEAM_T) {
+                            colorBase = settings->GetColorTvisible();
+                            if (entityIsVisible) {
+                                colorBase = settings->GetColorT();
                             }
-                            printf("4\n");
                         } else {
-                            if(gEntity.RenderWhenOccluded) {
-                                delete entity;
-                                continue;
+                            colorBase = settings->GetColorCTvisible();
+                            if(entityIsVisible) {
+                                colorBase = settings->GetColorCT();
                             }
-                            alpha = 0.65f;
-                            if (eTeam == TEAM_CT) {
-                                colorBase = "114,154,221";
-                            } else {
-                                colorBase = "231,190,90";
-                            }
-                            printf("5\n");
                         }
                     } else {
-                        if(!isGotvMode) {
-                            if((isWeapon || isBomb) && gEntity.RenderWhenOccluded) {
-                                continue;
-                            }
+                        if((isWeapon || isBomb) && gEntity.RenderWhenOccluded) {
+                            continue;
+                        }
                             
-                            if (isWeapon) {
-                                colorBase = "255,0,0";
-                            } else if (isBomb) {
-                                colorBase = "0,255,0";
-                            } else {
-                                delete entity;
-                                continue;
-                            }
+                        if (isWeapon) {
+                            colorBase = "255,0,0";
+                        } else if (isBomb) {
+                            colorBase = "0,255,0";
+                        } else {
+                            delete entity;
+                            continue;
                         }
                     }
                     
-                    printf("6\n");
                     std::vector<std::string> colors = settings->split<std::string>(colorBase, ",");
                     float red = atof(colors[0].c_str()) / 255;
                     float green = atof(colors[1].c_str()) / 255;
@@ -180,7 +196,6 @@ void cGlowEsp::applyGlow() {
                     gEntity.RenderWhenUnoccluded = false;
                     
                     entity->setGlow(gEntity, i);
-                    printf("10\n");
                 }
                 delete entity;
             }

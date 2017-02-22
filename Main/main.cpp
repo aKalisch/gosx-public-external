@@ -8,7 +8,6 @@ cEngine* engineFactory = new cEngine("csgo_osx64");
 bool redrawInterface = true;
 
 int main() {
-    
     std::thread TINIT(cInitManager::InitHack, engineFactory);
     TINIT.join();
     
@@ -28,7 +27,7 @@ int main() {
             }
             printf("Checking Player Mode%s\n", dots.c_str());
             currTries++;
-            usleep(300000);
+            usleep(500000);
             if(lp->isValidLivePlayer()) {
                 isTheaterMode = false;
                 break;

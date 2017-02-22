@@ -57,7 +57,7 @@ void cTriggerBot::apply() {
                 delete entity;
                 continue;
             }
-            entity->setBoneMatrixBones();
+            
             Hitbox_t hitbox;
             Vector entityHitbox;
             bool triggerCanHit =  false;
@@ -89,9 +89,8 @@ void cTriggerBot::apply() {
             }
             
             LocalPlayer->forceAttack();
-            usleep(cWeaponManager::getDelay(currentWeapon) * 1000);
-            
             delete entity;
+            usleep(cWeaponManager::getDelay(currentWeapon) * 10000);
         }
     }
 }

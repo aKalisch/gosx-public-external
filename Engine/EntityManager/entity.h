@@ -33,9 +33,11 @@ public:
     const QAngle    GetViewAngle();
     sGlowEntity     GetGlowObject();
     std::string     GetEntityClass();
+    int             GetEntityClassID();
     float           GetFlashAlpha();
     WeaponEntity    GetActiveWeaponData();
     bool            GetHasMovedSinceSpawn();
+    uint64_t*       GetAllWeapons();
     
     // Bool Getters
     bool        isInAir();
@@ -89,6 +91,7 @@ public:
 private:
 	cMemoryManager* memoryManager;
 	cOffsetManager* offsetManager;
+    int index;
 	uint64_t entityPointer;
 	int entityID;
     uint64_t glowObjectsManager = 0xF;
@@ -101,6 +104,7 @@ private:
     eTeam team = TEAM_UInit;
     bool bonesInitialized = false;
     Matrix3x4 entityBones[9];
+    uint64_t weaponArray[16];
 };
 
 #endif

@@ -18,6 +18,7 @@ public:
 private:
     cEngine* engine;
     cBspParser* bsp;
+    uint64_t registeredEntitys[256];
 };
 
 #endif /* GlowEsp_h */
