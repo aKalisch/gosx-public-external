@@ -92,8 +92,7 @@ void cGlowEsp::applyGlow() {
             if(registeredEntitys[i] != 0x0) {
                 cEntityManager* entity = engine->DefineGlowEntity(registeredEntitys[i]);
                 if(entity->isValidGlowEntity()) {
-                    entity->GetEntityClassID();
-                    continue;
+
                     sGlowEntity glowObject = entity->GetGlowObject();
                     
                     bool isWeapon = entity->isWeapon();
@@ -197,7 +196,6 @@ void cGlowEsp::applyGlow() {
                     
                     entity->setGlow(gEntity, i);
                 }
-                delete entity;
             }
         }
 
