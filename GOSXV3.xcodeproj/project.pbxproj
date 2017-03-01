@@ -31,7 +31,6 @@
 		D8A1BB4D1E3A113E008278DD /* TriggerBot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D8A1BB4B1E3A113E008278DD /* TriggerBot.cpp */; };
 		D8A1BB501E3A1382008278DD /* ray.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D8A1BB4E1E3A1382008278DD /* ray.cpp */; };
 		D8A1BB541E3A18CE008278DD /* feature.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D8A1BB521E3A18CE008278DD /* feature.cpp */; };
-		D8AF5D751E3F91C90020DF4A /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8AF5D741E3F91C90020DF4A /* SDL2.framework */; };
 		D8AF5D771E3F93BD0020DF4A /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8AF5D761E3F93BD0020DF4A /* OpenGL.framework */; };
 		D8BF6AFC1E3A5311007B8769 /* init.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D8BF6AFA1E3A5311007B8769 /* init.cpp */; };
 		D8CC6EC61E39C24600519F9E /* Extras.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D8CC6EC41E39C24600519F9E /* Extras.cpp */; };
@@ -109,7 +108,6 @@
 		D8A1BB4F1E3A1382008278DD /* ray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ray.h; sourceTree = "<group>"; };
 		D8A1BB521E3A18CE008278DD /* feature.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = feature.cpp; sourceTree = "<group>"; };
 		D8A1BB531E3A18CE008278DD /* feature.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = feature.h; sourceTree = "<group>"; };
-		D8AF5D741E3F91C90020DF4A /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2.framework; path = ../../../../../Library/Frameworks/SDL2.framework; sourceTree = "<group>"; };
 		D8AF5D761E3F93BD0020DF4A /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		D8BF6AFA1E3A5311007B8769 /* init.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = init.cpp; sourceTree = "<group>"; };
 		D8BF6AFB1E3A5311007B8769 /* init.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = init.h; sourceTree = "<group>"; };
@@ -127,7 +125,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				D8AF5D771E3F93BD0020DF4A /* OpenGL.framework in Frameworks */,
-				D8AF5D751E3F91C90020DF4A /* SDL2.framework in Frameworks */,
 				D82BAC241E3744CC009060DF /* ApplicationServices.framework in Frameworks */,
 				D82BAC261E3744D4009060DF /* Carbon.framework in Frameworks */,
 			);
@@ -231,7 +228,6 @@
 			isa = PBXGroup;
 			children = (
 				D8AF5D761E3F93BD0020DF4A /* OpenGL.framework */,
-				D8AF5D741E3F91C90020DF4A /* SDL2.framework */,
 				D82BAC251E3744D4009060DF /* Carbon.framework */,
 				D82BAC231E3744CC009060DF /* ApplicationServices.framework */,
 			);
