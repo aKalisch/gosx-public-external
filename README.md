@@ -7,9 +7,9 @@ Open the xCode Project an build the Product.
 Then locate the file by right click the executable and click on "Show in Finder"
 
 ## How to run:
-Open Terminal and the executable file to terminal.
+Open Terminal and drag the executable file to terminal.
 Make sure you put "sudo" in front of the filename.
-The Hack must run as run to work properly
+The Hack must run as root to work properly
 
 ## Features
  - Aimbot (Smooth, Hitbox, RCS, Visibility Check)
